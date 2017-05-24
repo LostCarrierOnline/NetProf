@@ -98,4 +98,3 @@ ENV/
 .gitignore
 .idea/
 nic-backup.txt
-profile.py
