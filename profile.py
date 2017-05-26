@@ -1,4 +1,6 @@
 import wmi
+import fileinput
+import re
 #pip install pypiwin32
 
 def backup_nic(device):
@@ -11,11 +13,17 @@ def backup_nic(device):
 
 def list_nic():
     nic_configs = wmi.WMI().Win32_NetworkAdapterConfiguration(IPEnabled=True)
-    #You need to scrape
-
-def add_nic():
-    print('placeholder, add nic settings')
-    #add nic settings
 
 
-backup_nic(0)
+def gw_ip(gateway_ip, device):
+    backup_nic(device)
+    #DefaultIPGateway = {"(.*?)"};
+    with open('nic-backup.txt', 'r') as myfile:
+        #data = myfile.read()
+        #modified = data.replace('DefaultIPGateway = {"(.?)"};', 'DefaultIPGateway = {"%s"};' % gateway_ip)
+        modified = re.sub(r'DefaultIPGateway = {"(.*)"};\n', 'DefaultIPGateway = {"%s"};\n' % gateway_ip, myfile.read())
+        print(modified)
+
+
+#backup_nic(0)
+gw_ip('Just a test', '0')
