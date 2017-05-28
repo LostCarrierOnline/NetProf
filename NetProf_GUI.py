@@ -41,7 +41,7 @@ def addProfile(self):
 
 
     buttonSet = Button(profileW, text='Set')
-    buttonSet.bind('buttonSet', command=profile.set_nic('192.168.0.45', '255.255.255.0', '192.168.0.1', 0)) #still doesn't fucking work, no idea why.
+    buttonSet.bind('buttonSet', meh) #still doesn't fucking work, no idea why.
     buttonSet.grid(row=5, column=0)
 
     #buttonSave = Button(profileW, text='Save')

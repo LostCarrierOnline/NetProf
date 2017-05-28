@@ -1,5 +1,4 @@
 import wmi
-import fileinput
 import re
 
 # pip install pypiwin32
@@ -12,11 +11,6 @@ def dprint(printable_string):
     else:
         pass
 
-
-####
-#    Backup MUST become a larger component. Once it has grabbed the nic data it must parse (create parse function for this) the file for the ip address, gateway, etc. Then save them to a backup file with that data in a simple
-#    format you can parse easily. Such as double :: between items or starting each line with it.
-####
 
 def create_profile(name, deviceid, gatewayip, ipaddress, subnet):
     output = deviceid + ',' + gatewayip + ',' + ipaddress + ',' + subnet
@@ -40,11 +34,31 @@ def backup_nic(device):
     with open('Device' + device + '.bak', 'w') as f:
         f.write(output)
 
-
+def current_ip():
+    c = wmi.WMI()
+    for interface in c.Win32_NetworkAdapterConfiguration(IPEnabled=1):
+        dprint(interface.Description, interface.MACAddress)
+        for ip_address in interface.IPAddress:
+            dprint(ip_address)
 
 
 def list_nic():
     nic_configs = wmi.WMI().Win32_NetworkAdapterConfiguration(IPEnabled=True)
+    #device_list = len(nic_configs)
+    #go through (starting with zero) and grab the name of each nic with it's device id. Starting with zero.
+    #print(device_list)
+
+    for i in range(0, 10): #count up to 10, to be used to find network devices
+        try:
+            nic_iter = nic_configs[i]
+            name_search = re.search('Description = "(.*)";', str(nic_iter)).group(1)
+            device_name = str(i) + ' ' + name_search
+            print(device_name)
+        except(ValueError, IndexError):
+            dprint('nic for ' + str(i) + ' doesnt exist')
+            pass
+
+
 
 
 # modified = data.replace('DefaultIPGateway = {"(.?)"};', 'DefaultIPGateway = {"%s"};' % gateway_ip)
