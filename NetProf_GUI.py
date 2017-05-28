@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.messagebox
+import profile
 
 rootW = Tk()
 rootW.title('NetProf')
@@ -37,6 +38,11 @@ def addProfile(self):
     buttonSave = Button(profileW, text='Save')
     buttonSave.bind('buttonSave', lambda event: save_popup) #still doesn't fucking work, no idea why.
     buttonSave.grid(row=4, column=0)
+
+
+    buttonSet = Button(profileW, text='Set')
+    buttonSet.bind('buttonSet', command=profile.set_nic('192.168.0.45', '255.255.255.0', '192.168.0.1', 0)) #still doesn't fucking work, no idea why.
+    buttonSet.grid(row=5, column=0)
 
     #buttonSave = Button(profileW, text='Save')
     #buttonSave.bind("<Button-2>", command=save_popup)
